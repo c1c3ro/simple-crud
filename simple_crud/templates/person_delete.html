@@ -4,18 +4,23 @@
 
 <div class="row text-center justify-content-center">
     <div class="col-12 col-md-5 my-4">
-            <h4>Feito! :)</h4>
-            <div class="text-start mt-4 mb-5">
+        <form action="." method="post"> {% csrf_token %}
+
+            <h4>Você realmente quer deletar essa pessoa? :(</h4>
+            
+            <div class="text-start my-5">
                 <p> <strong>Nome</strong>: {{ object.nome }} </p>
-                <p> <strong>Idade</strong>: {{ object.idade }} </p>
                 <p> <strong>Altura</strong>: {{ object.altura }} </p>
                 <p> <strong>Peso</strong>: {{ object.peso }} </p>
                 <p> <strong>Cor</strong>: {{ object.cor }} </p>
                 <p> <strong>Descrição</strong>: {{ object.descricao }} </p>
                 <p> <strong>Possui todos os 20 dedos?</strong>: {% if object.possui_os_20_dedos %} Sim {% else %} Não {% endif %} </p>
             </div>
-            <a href="{% url 'person:update_person' object.id %}" class="btn btn-secondary"> Editar </a>
+            
+        
+            <button class="btn btn-danger" type="submit"> Sim, excluir! </button>
             <a href="{% url 'person:list_person' %}" class="btn btn-primary"> Voltar </a>
+        </form>
     </div>
 </div>
 

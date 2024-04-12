@@ -2,11 +2,41 @@
 
 {% block content %}
 
-{% for instance in object_list %}
+<div class="container-fluid">
+    <div class="row text-center justify-content-center">
+        <div class="col-12 col-md-6"> 
+            <div class="accordion accordion-flush mb-5" id="accordionFlushExample">
+                {% for instance in object_list %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#id-{{ instance.id }}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                {{ instance.nome }}
+                            </button>
+                        </h2>
+                        <div id="id-{{ instance.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body text-start">
+                                <p> <strong>Nome</strong>: {{ instance.nome }} </p>
+                                <p> <strong>Idade</strong>: {{ instance.idade }} </p>
+                                <p> <strong>Altura</strong>: {{ instance.altura }} </p>
+                                <p> <strong>Peso</strong>: {{ instance.peso }} </p>
+                                <p> <strong>Cor</strong>: {{ instance.cor }} </p>
+                                <p> <strong>Descrição</strong>: {{ instance.descricao }} </p>
+                                <p> <strong>Possui todos os 20 dedos?</strong>: {% if instance.possui_os_20_dedos %} Sim {% else %} Não {% endif %} </p>
 
-<p> <a href="{{ instance.get_absolute_url }}"> Id: {{ instance.id }} </a> </p>
+                                <a href="{% url 'person:update_person' instance.id %}" class="btn btn-primary"> Editar </a>
+                                <a href="{% url 'person:delete_person' instance.id %}" class="btn btn-danger"> Excluir </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
 
-{% endfor %}
+            
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
  

@@ -4,6 +4,7 @@ from django.urls import reverse
 # Create your models here.
 class Person(models.Model):
     nome = models.CharField(max_length=150)
+    idade = models.CharField(max_length=20, default="Não informado")
     altura = models.DecimalField(decimal_places=2, max_digits=5)
     peso = models.DecimalField(decimal_places=3, max_digits=5)
     cor = models.CharField(max_length=20)

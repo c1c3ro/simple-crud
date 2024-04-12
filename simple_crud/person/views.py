@@ -1,12 +1,14 @@
 from typing import Any
 from django.db.models.base import Model as Model
+from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
     CreateView,
     UpdateView,
     ListView,
-    DetailView
+    DetailView,
+    DeleteView
 )
 
 from .forms import PersonForm
@@ -23,12 +25,37 @@ class PersonDetailView(DetailView):
     def get_object(self):
         id_ = self.kwargs.get("id")
         return get_object_or_404(Person, id=id_)
+    
+class PersonDeleteView(DeleteView):
+    template_name="person_delete.html"
+    queryset=Person.objects.all()
+
+    def get_object(self):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Person, id=id_)
+    
+    def get_success_url(self):
+        return reverse("person:list_person")
 
 class PersonCreateView(CreateView):
     template_name="person_create.html"
     form_class=PersonForm
-    success_url="../"
+    #success_url="../"
     queryset=Person.objects.all()
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super().form_valid(form)
+
+class PersonUpdateView(UpdateView):
+    template_name="person_update.html"
+    form_class=PersonForm
+    #success_url="../"
+    queryset=Person.objects.all()
+
+    def get_object(self):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Person, id=id_)
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
