@@ -3,6 +3,8 @@ from django.db.models.base import Model as Model
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout
 from django.views.generic import (
     CreateView,
     UpdateView,
@@ -14,11 +16,12 @@ from django.views.generic import (
 from .forms import PersonForm
 from .models import Person
 
-class PersonListView(ListView):
+class PersonListView(LoginRequiredMixin, ListView):
     template_name="person_list.html"
     queryset=Person.objects.all()
+    
 
-class PersonDetailView(DetailView):
+class PersonDetailView(LoginRequiredMixin, DetailView):
     template_name="person_detail.html"
     queryset=Person.objects.all()
 
@@ -26,7 +29,7 @@ class PersonDetailView(DetailView):
         id_ = self.kwargs.get("id")
         return get_object_or_404(Person, id=id_)
     
-class PersonDeleteView(DeleteView):
+class PersonDeleteView(LoginRequiredMixin, DeleteView):
     template_name="person_delete.html"
     queryset=Person.objects.all()
 
@@ -37,7 +40,7 @@ class PersonDeleteView(DeleteView):
     def get_success_url(self):
         return reverse("person:list_person")
 
-class PersonCreateView(CreateView):
+class PersonCreateView(LoginRequiredMixin, CreateView):
     template_name="person_create.html"
     form_class=PersonForm
     #success_url="../"
@@ -47,7 +50,7 @@ class PersonCreateView(CreateView):
         print(form.cleaned_data)
         return super().form_valid(form)
 
-class PersonUpdateView(UpdateView):
+class PersonUpdateView(LoginRequiredMixin, UpdateView):
     template_name="person_update.html"
     form_class=PersonForm
     #success_url="../"
@@ -57,6 +60,10 @@ class PersonUpdateView(UpdateView):
         id_ = self.kwargs.get("id")
         return get_object_or_404(Person, id=id_)
 
+def logout_view(request):
+    logout(request)
+    return render(request, "registration/logged_out.html", {})
+
 # Create your views here.
 def home_view(request, *args, **kwargs):
     print(request.user)
@@ -65,7 +72,5 @@ def home_view(request, *args, **kwargs):
         "paragraph": "This is my paragraph, it came from the context, how awesome is that?",
         "my_items": ['apple', "banana", 'mango', 'pie', "eggs", 'delicious', 'fruit']
     }
-
-    
 
     return render(request, "home.html", my_context)

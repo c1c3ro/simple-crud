@@ -1,18 +1,26 @@
 <div class="container-fluid">
     <div class="row flex-row justify-content-center">
-        <div class="col-12">
+        <div class="col-12 col-md-9">
             <nav>
                 <ul 
-                class="d-flex flex-row justify-content-center m-4"
+                class="d-flex flex-row justify-content-center justify-content-md-start m-4"
                 style="list-style: none; padding-left: 0 !important;">
                     <a href="/person/list" class="me-3 btn btn-dark" style="text-decoration: none;"><li>
                         Listar todos
                     </li></a>
-                    <a href="/person/create" class="btn btn-dark" style="text-decoration: none;"><li>
+                    <a href="/person/create" class="me-3 btn btn-dark" style="text-decoration: none;"><li>
                         Criar novo
                     </li></a>
                 </ul>
             </nav>
+        </div>
+        <div class="col-12 col-md-3">
+            <p class="my-4 d-flex justify-content-center"> Usuário: 
+                {% if request.user.is_authenticated %} 
+                    {{ request.user }} <a class="ms-3 btn btn-primary" href="{% url 'logout' %}"> Logout </a>
+                {% else %} 
+                    Não logado <a class="ms-3 btn btn-primary" href="{% url 'login' %}" > Entrar </a> </p> 
+                {% endif %}
         </div>
     </div>
 </div>
